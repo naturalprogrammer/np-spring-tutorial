@@ -25,7 +25,7 @@ public class SmtpMailSender implements MailSender {
 		MimeMessageHelper helper;
 
 		helper = new MimeMessageHelper(message, true); // true indicates
- 									  // multipart message
+ 									  				   // multipart message
 		helper.setSubject(subject);
 		helper.setTo(to);
 		helper.setText(body, true); // true indicates html
