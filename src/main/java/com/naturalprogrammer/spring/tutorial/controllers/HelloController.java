@@ -1,17 +1,15 @@
 package com.naturalprogrammer.spring.tutorial.controllers;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@Controller
 public class HelloController {
 
-	@Value("${app.name}")
-	private String appName;
-	
 	@RequestMapping("/hello")
-	public String hello() {
-		return "Hello " + appName;
+	public String hello(Model model) {
+		model.addAttribute("name", "Sanjay");
+		return "hello";
 	}
 }
