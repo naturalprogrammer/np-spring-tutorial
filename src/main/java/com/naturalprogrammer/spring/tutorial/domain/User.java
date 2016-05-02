@@ -9,14 +9,19 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
-import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
+import com.naturalprogrammer.spring.tutorial.validation.Password;
+import com.naturalprogrammer.spring.tutorial.validation.UniqueEmail;
+
 @Entity
-@Table(name="usr")
+@Table(name="usr", indexes = {
+    @Index(columnList = "email", unique=true)
+})
 public class User {
 	
 	public static enum Role {
@@ -27,10 +32,7 @@ public class User {
 	@GeneratedValue
 	private long id;
 	
-	@NotBlank(message = "{blankEmail}")
-	@Email
-	@Size(min=4, max=250, message = "{emailSize}")
-	@Column(nullable = false, length = 250)
+	@UniqueEmail
 	private String email;
 
 	@NotBlank
@@ -38,8 +40,7 @@ public class User {
 	@Column(nullable = false, length = 100)
 	private String name;
 
-	@NotBlank
-    @Size(min=6, max=40)
+	@Password
 	@Column(nullable = false) // no length because it will be encrypted
 	private String password;
 	
