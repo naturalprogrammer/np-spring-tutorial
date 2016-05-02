@@ -4,27 +4,29 @@
 <div class="panel panel-primary">
   <div class="panel-heading">Please sign up</div>
   <div class="panel-body">
-	<form method="post">
-	  <div class="form-group">
-	    <label for="exampleInputEmail1">Email address</label>
-	    <input name="email" type="email" class="form-control"
-	    	id="exampleInputEmail1"	placeholder="Email">
-	  </div>
-	  <div class="form-group">
-		  <label for="exampleInputName1">Name</label>
-		  <input name="name" type="text" class="form-control"
-		  	id="exampleInputName1" placeholder="Name">
-	  </div>
-	  <div class="form-group">
-	    <label for="exampleInputPassword1">Password</label>
-	    <input name="password" type="password" class="form-control"
-	    	id="exampleInputPassword1" placeholder="Password">
-	  </div>
+	<form:form modelAttribute="user" role="form">
+	
+	  <form:errors cssClass="error" />
 	  
+	  <div class="form-group">
+		<form:label path="email">Email address</form:label>
+		<form:input path="email" type="email" class="form-control"
+	            placeholder="Enter email" />
+		<form:errors path="email" cssClass="error" />
+	  </div>
+	  <div class="form-group">
+		<form:label path="name">Name</form:label>
+		<form:input path="name" class="form-control" placeholder="Enter name" />
+		<form:errors path="name" cssClass="error" />
+	  </div>
+	  <div class="form-group">
+		<form:label path="password">Password</form:label>
+		<form:password path="password" class="form-control" placeholder="Password" />
+		<form:errors path="password" cssClass="error" />
+	  </div>
 	  <button type="submit" class="btn btn-primary">Submit</button>
-	</form>
+	</form:form>
   </div>
 </div>
-
 
 <%@include file="includes/footer.jsp"%>
