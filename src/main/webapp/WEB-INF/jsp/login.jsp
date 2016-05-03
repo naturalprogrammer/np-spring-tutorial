@@ -41,6 +41,15 @@
 					placeholder="Password" />
 			</div>
 			
+		    <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input name="remember-me" type="checkbox">
+                        Remember me
+                    </label>
+                </div>
+            </div>
+
 			<button type="submit" class="btn btn-primary">
 				Sign In
 			</button>

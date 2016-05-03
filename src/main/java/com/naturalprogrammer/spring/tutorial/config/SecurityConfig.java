@@ -1,6 +1,8 @@
 package com.naturalprogrammer.spring.tutorial.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -8,19 +10,29 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+	@Value("${rememberMeKey:topSecret}")
+	private String rememberMeKey;
+
 	@Autowired
 	private UserDetailsService userDetailsService;
 
-	@Override
-	protected void configure(AuthenticationManagerBuilder builder)
-			throws Exception {
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+	  return new BCryptPasswordEncoder();
+	}
 
-		builder.userDetailsService(userDetailsService);
+	@Override
+	protected void configure(AuthenticationManagerBuilder builder) throws Exception {
+
+		builder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
 	}
 
 	@Override
@@ -40,6 +52,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	            .formLogin()
 		            .loginPage("/login").permitAll()
 		    .and()
-		       .logout().permitAll();
+		        .logout().permitAll()
+		    .and()
+	     		.rememberMe()
+		     		.key(rememberMeKey)
+		     		.rememberMeServices(new TokenBasedRememberMeServices(rememberMeKey, userDetailsService));
     }
 }
