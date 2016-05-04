@@ -46,6 +46,7 @@ public class User implements UserDetails {
 	@Column(nullable = false, length = 250)
 	private String email;
 	
+	
 	@NotBlank(groups = {SignUpValidation.class, UpdateValidation.class})
     @Size(max=100, groups = {SignUpValidation.class, UpdateValidation.class})
 	@Column(nullable = false, length = 100)
