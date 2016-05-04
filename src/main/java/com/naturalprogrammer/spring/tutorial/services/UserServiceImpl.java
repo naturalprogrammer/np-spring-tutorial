@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.naturalprogrammer.spring.tutorial.domain.User;
 import com.naturalprogrammer.spring.tutorial.domain.User.Role;
+import com.naturalprogrammer.spring.tutorial.dto.ForgotPasswordForm;
 import com.naturalprogrammer.spring.tutorial.mail.MailSender;
 import com.naturalprogrammer.spring.tutorial.repositories.UserRepository;
 import com.naturalprogrammer.spring.tutorial.util.MyUtil;
@@ -160,4 +161,50 @@ public class UserServiceImpl implements UserService {
 		// send the verification mail
 		sendVerificationMail(user);
 	}	
+
+	@Override
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
+	public void forgotPassword(ForgotPasswordForm forgotPasswordForm) {
+		
+		// fetch the user record from database
+		User user = userRepository.findByEmail(forgotPasswordForm.getEmail()).get();
+
+		// set a reset password code
+		user.setResetPasswordCode(UUID.randomUUID().toString());
+		userRepository.save(user);
+
+		// after successful commit, mail him a link to reset his password
+		MyUtil.afterCommit(() -> mailResetPasswordLink(user));
+	}
+
+	private void mailResetPasswordLink(User user) {
+		
+		try {
+
+			// make the link
+			String resetPasswordLink =	applicationUrl
+				    + "/reset-password/" + user.getResetPasswordCode();
+			
+			// send the mail
+			mailSender.send(user.getEmail(),
+					MyUtil.getMessage("resetPasswordSubject"),
+					MyUtil.getMessage("resetPasswordEmail",
+						resetPasswordLink));
+			
+		} catch (MessagingException e) {
+			// In case of exception, just log the error and keep silent			
+			log.error(ExceptionUtils.getStackTrace(e));
+		}
+	}
+	
+	@Override
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
+	public void resetPassword(String resetPasswordCode,
+			String password) {
+		
+		User user = userRepository.findByResetPasswordCode(resetPasswordCode).get();
+		user.setPassword(passwordEncoder.encode(password));
+		user.setResetPasswordCode(null);
+		userRepository.save(user);
+	}
 }
