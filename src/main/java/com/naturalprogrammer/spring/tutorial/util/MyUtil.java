@@ -76,4 +76,11 @@ public class MyUtil {
 		        }
 		});				
 	}
+
+	public static void validate(boolean valid,
+			String messageKey, Object... messageArguments) {
+
+		if (!valid)
+			throw new RuntimeException(getMessage(messageKey, messageArguments));
+	}
 }

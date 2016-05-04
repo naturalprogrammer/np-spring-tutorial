@@ -18,6 +18,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.naturalprogrammer.spring.tutorial.util.MyUtil;
 import com.naturalprogrammer.spring.tutorial.validation.Password;
 import com.naturalprogrammer.spring.tutorial.validation.UniqueEmail;
 
@@ -52,6 +53,9 @@ public class User implements UserDetails {
 	@ElementCollection(fetch = FetchType.EAGER)
 	private Collection<Role> roles = new HashSet<Role>();
 
+	@Column(length = 36, unique=true)
+	private String verificationCode;
+
 	// Getters and Setters
 
 	public long getId() {
@@ -85,6 +89,12 @@ public class User implements UserDetails {
 	public void setRoles(Collection<Role> roles) {
 		this.roles = roles;
 	}
+	public String getVerificationCode() {
+		return verificationCode;
+	}
+	public void setVerificationCode(String verificationCode) {
+		this.verificationCode = verificationCode;
+	}
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -103,6 +113,26 @@ public class User implements UserDetails {
 		return email;
 	}
 	
+	public boolean isAdminOrSelfLoggedIn() {
+		
+		User loggedIn = MyUtil.getUser();
+		
+		if (loggedIn == null) // nobody logged in
+			return false;
+		
+		if (loggedIn.isAdmin()) // an Admin has logged in
+			return true;
+		
+		if (loggedIn.getId() == id) // Same user has logged in
+			return true;
+		
+		return false; // some other user has logged in
+	}
+
+	public boolean isAdmin() {
+		return roles.contains(Role.ADMIN);
+	}
+
 	@Override
 	public boolean isAccountNonExpired() {
 		return true;

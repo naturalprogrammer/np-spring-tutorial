@@ -103,6 +103,16 @@
 	  </div><!-- /.container-fluid -->
 	</nav>
 
+	<sec:authorize access="hasRole('UNVERIFIED')">
+		<div class="alert alert-warning alert-dismissable">
+		  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		  	<span aria-hidden="true">&times;</span>
+		  </button>
+		  <sec:authentication property="principal.id" var="currentUserId" />
+		  <spring:message code="unverified" arguments="${currentUserId}" />
+		</div>
+	</sec:authorize>
+
 	<c:if test="${not empty flashMessage}">
 
 		<div class="alert alert-${flashKind} alert-dismissible" role="alert">
