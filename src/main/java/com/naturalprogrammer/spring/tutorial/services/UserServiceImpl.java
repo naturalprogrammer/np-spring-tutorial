@@ -207,4 +207,16 @@ public class UserServiceImpl implements UserService {
 		user.setResetPasswordCode(null);
 		userRepository.save(user);
 	}
+
+	@Override
+	public User findById(long userId) {
+		
+		User user = userRepository.findOne(userId);
+		MyUtil.validate(user != null, "userNotFound");
+
+		if (!user.isAdminOrSelfLoggedIn())
+			user.setEmail("Confidential");
+			
+		return user;
+	}
 }

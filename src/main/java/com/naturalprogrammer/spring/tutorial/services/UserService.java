@@ -13,4 +13,5 @@ public interface UserService {
 	void resendVerificationMail(User user);
 	void forgotPassword(ForgotPasswordForm forgotPasswordForm);
 	void resetPassword(String resetPasswordCode, String password);
+	User findById(long userId);
 }

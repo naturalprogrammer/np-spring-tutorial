@@ -81,6 +81,9 @@
 		          	 <span class="caret"></span>
 		          </a>
 		          <ul class="dropdown-menu">
+				    <li><a href="/users/<sec:authentication property='principal.id' />">
+				    	<span class="glyphicon glyphicon-user"></span> Profile</a>
+				    </li>
 					<li>
 						<c:url var="logoutUrl" value="/logout" />
 						<form:form	id="logoutForm" action="${logoutUrl}">

@@ -41,6 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
         	.authorizeRequests()
 		    	.antMatchers(HttpMethod.GET,
+		    			"/users/*",
 		    			"/").permitAll()
 		    	.antMatchers(
 		    			"/signup",

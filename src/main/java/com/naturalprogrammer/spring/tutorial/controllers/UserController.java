@@ -2,6 +2,7 @@ package com.naturalprogrammer.spring.tutorial.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -39,5 +40,12 @@ public class UserController {
     			"success", "verificationMailSent");
     	
     	return "redirect:/";
+    }
+    
+    @RequestMapping(value = "/{userId}", method=RequestMethod.GET)
+    public String getById(@PathVariable long userId, Model model) {
+    	
+    	model.addAttribute(userService.findById(userId));
+	  	return "user";
     }
 }
