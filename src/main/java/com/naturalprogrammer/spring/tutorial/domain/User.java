@@ -28,6 +28,10 @@ import com.naturalprogrammer.spring.tutorial.validation.UniqueEmail;
 })
 public class User implements UserDetails {
 	
+	// Validation groups
+	public static interface SignUpValidation {}
+	public static interface UpdateValidation {}
+
 	private static final long serialVersionUID = 8426932111132668753L;
 
 	public static enum Role {
@@ -38,15 +42,16 @@ public class User implements UserDetails {
 	@GeneratedValue
 	private long id;
 	
-	@UniqueEmail
+	@UniqueEmail(groups = SignUpValidation.class)
+	@Column(nullable = false, length = 250)
 	private String email;
-
-	@NotBlank
-    @Size(max=100)
+	
+	@NotBlank(groups = {SignUpValidation.class, UpdateValidation.class})
+    @Size(max=100, groups = {SignUpValidation.class, UpdateValidation.class})
 	@Column(nullable = false, length = 100)
 	private String name;
-
-	@Password
+	
+	@Password(groups = SignUpValidation.class)
 	@Column(nullable = false) // no length because it will be encrypted
 	private String password;
 	

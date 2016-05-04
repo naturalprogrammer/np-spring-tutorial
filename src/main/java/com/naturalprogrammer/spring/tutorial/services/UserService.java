@@ -14,4 +14,5 @@ public interface UserService {
 	void forgotPassword(ForgotPasswordForm forgotPasswordForm);
 	void resetPassword(String resetPasswordCode, String password);
 	User findById(long userId);
+	void update(User user, User updatedData);
 }

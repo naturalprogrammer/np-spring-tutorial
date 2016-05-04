@@ -219,4 +219,36 @@ public class UserServiceImpl implements UserService {
 			
 		return user;
 	}
+	
+	@Override
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
+	public void update(User user, User updatedData) {
+		
+		// Ensure that a user with the given id exists
+		MyUtil.validate(user != null, "userNotFound");
+		
+		// Only self or an admin can edit the profile data
+		MyUtil.validate(user.isAdminOrSelfLoggedIn(), "notPermitted");
+
+		// Update the name
+		user.setName(updatedData.getName());
+		
+		User loggedIn = MyUtil.getUser(); 
+
+		// Only an admin can edit roles
+		if (loggedIn.isAdmin())
+			user.setRoles(updatedData.getRoles());
+		
+		// save the updates
+		userRepository.save(user);
+
+		MyUtil.afterCommit(() -> {
+
+			// If the logged in user is editing his own profile,
+			// log her in again, so that Spring Security principal
+			// gets updated
+	            if (loggedIn.getId() == user.getId())
+	        	    MyUtil.login(user);
+	    });
+	}
 }

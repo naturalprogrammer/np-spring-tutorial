@@ -18,6 +18,17 @@
         </dl>
     </div>
     
+    <c:if test="${user.adminOrSelfLoggedIn}">
+	    <div class="panel-footer">
+	
+	        <a class="btn btn-link" href="/users/${user.id}/edit">Edit</a>
+	        <a class="btn btn-link" href="/users/${user.id}/change-password">
+ 				Change password</a>
+	        <a class="btn btn-link" href="/users/${user.id}/change-email">
+ 				Change email id</a>
+	    </div>
+     </c:if>
+
 </div>
 
 <%@include file="includes/footer.jsp"%>

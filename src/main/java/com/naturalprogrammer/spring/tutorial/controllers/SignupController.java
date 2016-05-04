@@ -28,7 +28,8 @@ public class SignupController {
 	}
 
 	@RequestMapping(method=RequestMethod.POST)
-	public String doSignup(@Validated User user,
+	public String doSignup(
+			@Validated(User.SignUpValidation.class) User user,
 			BindingResult result,
 			RedirectAttributes redirectAttributes) {
 		
