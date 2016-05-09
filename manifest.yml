@@ -1,0 +1,8 @@
+---
+applications:
+- name: np-spring-tutorial
+  buildpack: https://github.com/cloudfoundry/java-buildpack.git
+  path: target/spring-tutorial-0.0.1-SNAPSHOT.war
+  env:
+    application_url: http://np-spring-tutorial.cfapps.io
+  timeout: 180
