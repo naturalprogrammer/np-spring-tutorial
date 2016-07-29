@@ -29,25 +29,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	  return new BCryptPasswordEncoder();
 	}
 
-	@Override
-	protected void configure(AuthenticationManagerBuilder builder) throws Exception {
-
-		builder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-	}
+//	@Override
+//	protected void configure(AuthenticationManagerBuilder builder) throws Exception {
+//
+//		builder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+//	}
 
 	@Override
     protected void configure(HttpSecurity http) throws Exception {
     	
         http
         	.authorizeRequests()
-		    	.antMatchers(HttpMethod.GET,
+		    	.mvcMatchers(HttpMethod.GET,
 		    			"/users/*",
 		    			"/").permitAll()
-		    	.antMatchers(
+		    	.mvcMatchers(
 		    			"/signup",
 		    			"/forgot-password",
 	            		"/reset-password/*").permitAll()
-		    	.antMatchers(HttpMethod.GET, "/admin/**").hasRole("ADMIN")
+		    	.mvcMatchers(HttpMethod.GET, "/admin/**").hasRole("ADMIN")
             	.anyRequest().authenticated()
 	        .and()
 	            .formLogin()
