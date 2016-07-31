@@ -38,6 +38,7 @@ public class User implements UserDetails {
 	private long id;
 	
 	@UniqueEmail
+	@Column(nullable = false, length = 250)
 	private String email;
 
 	@NotBlank
