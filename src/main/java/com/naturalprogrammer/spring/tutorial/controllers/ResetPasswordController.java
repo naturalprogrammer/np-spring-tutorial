@@ -7,9 +7,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.naturalprogrammer.spring.tutorial.dto.ResetPasswordForm;
@@ -23,14 +24,14 @@ public class ResetPasswordController {
 	@Autowired
 	private UserService userService;
 
-	@RequestMapping(method = RequestMethod.GET)
+	@GetMapping
 	public String forgotPassword(Model model) {
 		
 		model.addAttribute(new ResetPasswordForm());		
 		return "reset-password";		
 	}	
 
-	@RequestMapping(method = RequestMethod.POST)
+	@PostMapping
 	public String resetPassword(
 			@PathVariable String resetPasswordCode,
 			@Validated ResetPasswordForm resetPasswordForm,
